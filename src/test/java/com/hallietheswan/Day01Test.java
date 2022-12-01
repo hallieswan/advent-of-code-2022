@@ -11,7 +11,13 @@ class Day01Test {
 
     @Test
     void part1() throws URISyntaxException, IOException {
-        Day01 day01 = new Day01();
-        assertEquals(24000, day01.part1("day01_part1_input.txt"));
+        Day01 day01 = new Day01("day01_test.txt");
+        assertEquals(24000, day01.part1());
+    }
+
+    @Test
+    void part2() throws URISyntaxException, IOException {
+        Day01 day01 = new Day01("day01_test.txt");
+        assertEquals(45000, day01.part2());
     }
 }

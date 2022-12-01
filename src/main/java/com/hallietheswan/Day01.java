@@ -4,11 +4,40 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Day01 {
 
+    ArrayList<Integer> elfCalories;
+
+    public Day01(String fileName) throws URISyntaxException, IOException {
+
+        // load file from resources
+        List<String> input = readFileLinesFromResources(fileName);
+
+        // calculate each elf's calories
+        elfCalories = new ArrayList();
+        int thisElf = 0;
+        for (String str : input) {
+            if (str.equals("")) {
+                elfCalories.add(thisElf);
+                thisElf = 0;
+            } else {
+                thisElf += Integer.parseInt(str);
+            }
+        }
+        // add in last elf
+        if (thisElf > 0) elfCalories.add(thisElf);
+
+        // sort the array of calories
+        Collections.sort(elfCalories);
+    }
+
     private List<String> readFileLinesFromResources(String fileName) throws URISyntaxException, IOException {
+        // read file from resources
+        // ...https://stackoverflow.com/a/58230499
         return Files.readAllLines(
                 Paths.get(
                         getClass().getResource("/" +fileName).toURI()
@@ -16,30 +45,24 @@ public class Day01 {
         );
     }
 
-    public int part1(String fileName) throws URISyntaxException, IOException {
-        // load file from resources
-        // ...https://stackoverflow.com/a/58230499
-        List<String> input = readFileLinesFromResources(fileName);
-
-        // calculate totals for each elf
-        int maxCalories = Integer.MIN_VALUE;
-        int elfCalories = 0;
-        for (String str : input) {
-            if (str.equals("")) {
-                maxCalories = Math.max(maxCalories, elfCalories);
-                elfCalories = 0;
-            } else {
-                elfCalories += Integer.parseInt(str);
-            }
+    private int getTotalElfCalories(int nElves) {
+        if (elfCalories.size() < nElves) {
+            throw new IllegalArgumentException("Too many elves specified.");
         }
-
-        return maxCalories;
+        int elfIndex = elfCalories.size() - 1;
+        int totalCalories = 0;
+        for (int i = 0; i < nElves; i++) {
+            totalCalories += elfCalories.get(elfIndex - i);
+        }
+        return totalCalories;
     }
 
-    public static void main(final String[] args) throws IOException, URISyntaxException {
-        System.out.println("Day01 ------------");
-        System.out.print("Part 1: ");
-        Day01 day01 = new Day01();
-        System.out.println(day01.part1("day01_part1_input.txt"));
+    public int part1() {
+        return getTotalElfCalories(1);
     }
+
+    public int part2() {
+        return getTotalElfCalories(3);
+    }
+
 }
