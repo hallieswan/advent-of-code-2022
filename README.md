@@ -1,5 +1,7 @@
 ## Advent of Code 2022
 
+[![run unit tests](https://github.com/hallieswan/advent-of-code-2022/actions/workflows/run-tests.yml/badge.svg)](https://github.com/hallieswan/advent-of-code-2022/actions/workflows/run-tests.yml)
+
 ### Introduction
 
 [Advent of Code](https://adventofcode.com/2022/about)
