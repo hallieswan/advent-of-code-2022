@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Day01 {
+public class Day01 implements Day {
 
     ArrayList<Integer> elfCalories;
 
@@ -57,10 +57,12 @@ public class Day01 {
         return totalCalories;
     }
 
+    @Override
     public int part1() {
         return getTotalElfCalories(1);
     }
 
+    @Override
     public int part2() {
         return getTotalElfCalories(3);
     }
