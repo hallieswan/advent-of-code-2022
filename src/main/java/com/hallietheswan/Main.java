@@ -3,17 +3,17 @@ package com.hallietheswan;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Main {
 
-    private static Map<Integer, Day> days;
+    private static TreeMap<Integer, Day> days = new TreeMap<>();
 
     static {
         try {
-            days = Map.of(
-                    1, new Day01("day01_input.txt"),
-                    2, new Day02("day02_input.txt")
-            );
+            days.put(1, new Day01("day01_input.txt"));
+            days.put(2, new Day02("day02_input.txt"));
+            days.put(3, new Day03("day03_input.txt"));
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
