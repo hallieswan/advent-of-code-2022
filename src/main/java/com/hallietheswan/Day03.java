@@ -2,7 +2,6 @@ package com.hallietheswan;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -59,8 +58,38 @@ public class Day03 implements Day {
         return totalPriority;
     }
 
+    private char getGroupBadge(List<String> group) {
+        // add first rucksack
+        Set<Character> set = new HashSet<>();
+        set = getItemTypeSet(group.get(0));
+
+        // compare each subsequent rucksack
+        for (String bag : group.subList(1, group.size())) {
+            Set<Character> thisSet = getItemTypeSet(bag);
+            set.retainAll(thisSet);
+        }
+
+        // return the item type
+        return set.stream().findFirst().orElse('0');
+    }
+
+    private Set<Character> getItemTypeSet(String str) {
+        Set<Character> set = new HashSet<>();
+        for (char c : str.toCharArray()) {
+            set.add(c);
+        }
+        return set;
+    }
+
     @Override
     public int part2() {
-        return -1;
+        int groupSize = 3;
+        int groups = inventory.size() / groupSize;
+        int totalPriority = 0;
+        for (int i = 0, left = 0; i < groups; i++, left += groupSize) {
+            char c = getGroupBadge(inventory.subList(left, left + groupSize));
+            totalPriority += getItemTypePriority(c);
+        }
+        return totalPriority;
     }
 }

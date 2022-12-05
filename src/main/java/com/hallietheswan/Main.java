@@ -2,7 +2,6 @@ package com.hallietheswan;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Map;
 import java.util.TreeMap;
 
 public class Main {
