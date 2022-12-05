@@ -22,12 +22,21 @@ public class Day04 implements Day {
             return end;
         }
 
-        public boolean contains(Range range) {
+        public boolean containsEntirely(Range range) {
             return start <= range.getStart() && end >= range.getEnd();
         }
 
-        public boolean overlaps(Range range) {
-            return contains(range) || range.contains(this);
+        public boolean overlapsEntirely(Range range) {
+            return containsEntirely(range) || range.containsEntirely(this);
+        }
+
+        public boolean containsPartially(Range range) {
+            return (start <= range.getStart() && range.getStart() <= end) ||
+                    (range.getStart() <= end && start <= range.getStart());
+        }
+
+        public boolean overlapsPartially(Range range) {
+            return containsPartially(range) || range.containsPartially(this);
         }
 
     }
@@ -45,13 +54,20 @@ public class Day04 implements Day {
             String[] rangeStrings = str.split(",");
             Range left = new Range(rangeStrings[0]);
             Range right = new Range(rangeStrings[1]);
-            if (left.overlaps(right)) countOverlaps++;
+            if (left.overlapsEntirely(right)) countOverlaps++;
         }
         return countOverlaps;
     }
 
     @Override
     public int part2() {
-        return -2;
+        int countPartialOverlaps = 0;
+        for (String str : assignments) {
+            String[] rangeStrings = str.split(",");
+            Range left = new Range(rangeStrings[0]);
+            Range right = new Range(rangeStrings[1]);
+            if (left.overlapsPartially(right)) countPartialOverlaps++;
+        }
+        return countPartialOverlaps;
     }
 }
