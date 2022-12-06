@@ -48,7 +48,7 @@ public class Day04 implements Day {
     }
 
     @Override
-    public int part1() {
+    public Object part1() {
         int countOverlaps = 0;
         for (String str : assignments) {
             String[] rangeStrings = str.split(",");
@@ -60,7 +60,7 @@ public class Day04 implements Day {
     }
 
     @Override
-    public int part2() {
+    public Object part2() {
         int countPartialOverlaps = 0;
         for (String str : assignments) {
             String[] rangeStrings = str.split(",");

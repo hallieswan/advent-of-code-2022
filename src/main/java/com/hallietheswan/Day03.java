@@ -49,7 +49,7 @@ public class Day03 implements Day {
     }
 
     @Override
-    public int part1() {
+    public Object part1() {
         int totalPriority = 0;
         for (String str : inventory) {
             char c = getDuplicatedItemType(str);
@@ -82,7 +82,7 @@ public class Day03 implements Day {
     }
 
     @Override
-    public int part2() {
+    public Object part2() {
         int groupSize = 3;
         int groups = inventory.size() / groupSize;
         int totalPriority = 0;

@@ -96,7 +96,7 @@ public class Day02 implements Day {
     }
 
     @Override
-    public int part1() {
+    public Object part1() {
 
         // Self shape map - X for Rock, Y for Paper, and Z for Scissors
         Map<String, Shape> myShapeMap = Map.of(
@@ -118,7 +118,7 @@ public class Day02 implements Day {
     }
 
     @Override
-    public int part2() {
+    public Object part2() {
         // Desired Outcome map - X for Loss, Y for Draw, and Z for Win
         Map<String, Outcome> desiredOutcomeMap = Map.of(
                 "X", Outcome.LOSS,

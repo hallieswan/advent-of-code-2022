@@ -58,12 +58,12 @@ public class Day01 implements Day {
     }
 
     @Override
-    public int part1() {
+    public Object part1() {
         return getTotalElfCalories(1);
     }
 
     @Override
-    public int part2() {
+    public Object part2() {
         return getTotalElfCalories(3);
     }
 
