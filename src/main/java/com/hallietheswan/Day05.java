@@ -8,15 +8,48 @@ import java.util.List;
 
 public class Day05 implements Day {
 
+    // nested CrateMover class --------------------------------------------------------------------
+    public interface CrateMover {
+        void moveCrates(int numToMove, int startStack, int destStack);
+    }
+
+    public class CrateMover9000 implements CrateMover {
+        @Override
+        public void moveCrates(int numToMove, int startStack, int destStack) {
+            for (int i = 0; i < numToMove; i++) {
+                char c = crateMap.get(startStack).pop();
+                crateMap.get(destStack).push(c);
+            }
+        }
+    }
+
+    public class CrateMover9001 implements CrateMover {
+        @Override
+        public void moveCrates(int numToMove, int startStack, int destStack) {
+            ArrayDeque<Character> tmpStack = new ArrayDeque();
+            for (int i = 0; i < numToMove; i++) {
+                char c = crateMap.get(startStack).pop();
+                tmpStack.push(c);
+            }
+            for (int i = 0; i < numToMove; i++) {
+                crateMap.get(destStack).push(tmpStack.pop());
+            }
+        }
+    }
+    // end CrateMover class ---------------------------------------------------------------------------
+
     private List<String> input;
-    private int procedureStartIndex;
+    private int lineSpace;
     private HashMap<Integer, ArrayDeque<Character>> crateMap;
     int totalStacks;
 
     public Day05(String fileName) throws URISyntaxException, IOException {
         input = Utility.readFileLinesFromResources(fileName);
-        crateMap = new HashMap<Integer, ArrayDeque<Character>>();
-        setupCrateMap();
+        // find line with space
+        lineSpace = 0;
+        while (!input.get(lineSpace).equals("")) {
+            lineSpace++;
+        }
     }
 
     private void createStacks(String line) {
@@ -47,11 +80,8 @@ public class Day05 implements Day {
     }
 
     private void setupCrateMap() {
-        // find line with space
-        int lineSpace = 0;
-        while (!input.get(lineSpace).equals("")) {
-            lineSpace++;
-        }
+        // create new map
+        crateMap = new HashMap<Integer, ArrayDeque<Character>>();
 
         // create stacks
         createStacks(input.get(lineSpace - 1));
@@ -60,9 +90,6 @@ public class Day05 implements Day {
         for (int index = lineSpace - 2; index >= 0; index--) {
             parseStackLine(input.get(index));
         }
-
-        // store the procedure starting index
-        procedureStartIndex = lineSpace + 1;
     }
 
     private void moveCrates(int numToMove, int startStack, int destStack) {
@@ -72,11 +99,11 @@ public class Day05 implements Day {
         }
     }
 
-    private void executeProcedure() {
-        for (int i = procedureStartIndex; i < input.size(); i++) {
+    private void executeProcedure(CrateMover mover) {
+        for (int i = lineSpace + 1; i < input.size(); i++) {
             String line = input.get(i);
             String[] instructions = line.split(" ");
-            moveCrates(
+            mover.moveCrates(
                     Integer.parseInt(instructions[1]),
                     Integer.parseInt(instructions[3]),
                     Integer.parseInt(instructions[5])
@@ -84,9 +111,7 @@ public class Day05 implements Day {
         }
     }
 
-    @Override
-    public Object part1() {
-        executeProcedure();
+    private String getTopStacks() {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 1; i <= totalStacks; i++) {
             stringBuilder.append(crateMap.get(i).peek());
@@ -95,7 +120,18 @@ public class Day05 implements Day {
     }
 
     @Override
+    public Object part1() {
+        CrateMover mover = new CrateMover9000();
+        setupCrateMap();
+        executeProcedure(mover);
+        return getTopStacks();
+    }
+
+    @Override
     public Object part2() {
-        return -1;
+        CrateMover mover = new CrateMover9001();
+        setupCrateMap();
+        executeProcedure(mover);
+        return getTopStacks();
     }
 }

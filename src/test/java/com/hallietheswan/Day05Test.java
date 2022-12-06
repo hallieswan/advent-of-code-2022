@@ -15,4 +15,9 @@ class Day05Test {
         assertEquals("CMZ", day05.part1());
     }
 
+    @Test
+    void part2() throws URISyntaxException, IOException {
+        Day05 day05 = new Day05("day05_test.txt");
+        assertEquals("MCD", day05.part2());
+    }
 }
