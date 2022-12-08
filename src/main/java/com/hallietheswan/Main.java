@@ -17,6 +17,7 @@ public class Main {
             days.put(5, new Day05("day05_input.txt"));
             days.put(6, new Day06("day06_input.txt"));
             days.put(7, new Day07("day07_input.txt"));
+            days.put(8, new Day08("day08_input.txt"));
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
