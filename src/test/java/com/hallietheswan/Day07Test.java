@@ -14,4 +14,10 @@ public class Day07Test {
         Day07 day07 = new Day07("day07_test.txt");
         assertEquals(95437, day07.part1());
     }
+
+    @Test
+    public void part2() throws URISyntaxException, IOException {
+        Day07 day07 = new Day07("day07_test.txt");
+        assertEquals(24933642, day07.part2());
+    }
 }

@@ -3,17 +3,24 @@ package com.hallietheswan;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayDeque;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
 
 public class Day07 implements Day {
     private List<String> navigation;
     private DirectoryNode root;
+    private HashMap<String, Integer> directorySizes;
+
+    private final int TOTAL_DISK_SPACE = 70000000;
+    private final int TOTAL_SPACE_NEEDED_FOR_UPDATE = 30000000;
 
     public Day07(String fileName) throws URISyntaxException, IOException {
         this.navigation = Utility.readFileLinesFromResources(fileName);
         root = new DirectoryNode("/");
         buildDirectory();
+        directorySizes = new HashMap();
+        updateDirectorySizes();
     }
 
     private DirectoryNode cd(DirectoryNode current, String directory) {
@@ -30,7 +37,7 @@ public class Day07 implements Day {
         }
         return current;
     }
-    
+
     private void buildDirectory() {
         DirectoryNode current = root;
         for (String input : navigation) {
@@ -53,19 +60,27 @@ public class Day07 implements Day {
         }
     }
 
-    @Override
-    public Object part1() {
-        int total = 0;
+    private void updateDirectorySizes() {
         Queue<DirectoryNode> queue = new ArrayDeque();
         queue.add(root);
         while (!queue.isEmpty()) {
             DirectoryNode current = queue.poll();
-            int dirSize = current.getTotalFileSize();
-            if (dirSize <= 100000) {
-                total += dirSize;
-            }
+            directorySizes.put(
+                    current.getDirName(),
+                    current.getTotalFileSize()
+            );
             for (DirectoryNode child : current.getChildren()) {
                 queue.add(child);
+            }
+        }
+    }
+
+    @Override
+    public Object part1() {
+        int total = 0;
+        for (int dirSize : directorySizes.values()) {
+            if (dirSize <= 100000) {
+                total += dirSize;
             }
         }
         return total;
@@ -73,6 +88,15 @@ public class Day07 implements Day {
 
     @Override
     public Object part2() {
-        return -1;
+        int totalUsed = root.getTotalFileSize();
+        int spaceToFree = TOTAL_SPACE_NEEDED_FOR_UPDATE - (TOTAL_DISK_SPACE - totalUsed);
+
+        int smallestDirectoryToDelete = Integer.MAX_VALUE;
+        for (int dirSize : directorySizes.values()) {
+            if (dirSize <= smallestDirectoryToDelete && dirSize >= spaceToFree) {
+                smallestDirectoryToDelete = dirSize;
+            }
+        }
+        return smallestDirectoryToDelete;
     }
 }
