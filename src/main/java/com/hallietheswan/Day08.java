@@ -91,6 +91,48 @@ public class Day08 implements Day {
         return false;
     }
 
+    public int getScenicScore(int startRow, int startCol) {
+        int val = trees[startRow][startCol];
+
+        // look from here to left
+        int scenicLeft = 0;
+        for (int row = startRow - 1; row >= 0; row--) {
+            scenicLeft++;
+            if (val <= trees[row][startCol]) {
+                break;
+            }
+        }
+
+        // look from here to right
+        int scenicRight = 0;
+        for (int row = startRow + 1; row < nRows; row++) {
+            scenicRight++;
+            if (val <= trees[row][startCol]) {
+                break;
+            }
+        }
+
+        // look from here to top
+        int scenicUp = 0;
+        for (int col = startCol - 1; col >= 0; col--) {
+            scenicUp++;
+            if (val <= trees[startRow][col]) {
+                break;
+            }
+        }
+
+        // look from here to bottom
+        int scenicDown = 0;
+        for (int col = startCol + 1; col < nCols; col++) {
+            scenicDown++;
+            if (val <= trees[startRow][col]) {
+                break;
+            }
+        }
+
+        return scenicLeft * scenicRight * scenicUp * scenicDown;
+    }
+
     @Override
     public Object part1() {
         // account for edges, which are visible by default
@@ -105,6 +147,13 @@ public class Day08 implements Day {
 
     @Override
     public Object part2() {
-        return -1;
+        int maxScenicScore = 0;
+        // don't need to check edges -- max viewing distance will always be 0
+        for (int row = 1; row < nRows - 1; row++) {
+            for (int col = 1; col < nCols - 1; col++) {
+                maxScenicScore = Math.max(maxScenicScore, getScenicScore(row, col));
+            }
+        }
+        return maxScenicScore;
     }
 }
