@@ -7,10 +7,10 @@ public class OperationMultiplication implements Operation {
         this.multiplier = multiplier;
     }
     @Override
-    public int updateWorryLevel(int worryLevel) {
+    public long updateWorryLevel(long worryLevel) {
         if (multiplier.equals("old")) {
-            return worryLevel * worryLevel;
+            return Math.multiplyExact(worryLevel, worryLevel);
         }
-        return worryLevel * Integer.parseInt(multiplier);
+        return Math.multiplyExact(worryLevel, Long.parseLong(multiplier));
     }
 }

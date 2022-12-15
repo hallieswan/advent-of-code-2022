@@ -10,22 +10,23 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 public class Day11 implements Day {
-    Map<Integer, Monkey> monkeyMap;
+    private Map<Integer, Monkey> monkeyMap;
+    private List<String> input;
+    private int monkeyLeastCommonMultiple;
 
     public Day11(String fileName) throws URISyntaxException, IOException {
-        List<String> input = Utility.readFileLinesFromResources(fileName);
-        buildMonkeyMap(input);
+        input = Utility.readFileLinesFromResources(fileName);
     }
 
     private int getIdFromInputString(String string) {
         return Integer.parseInt(string.replaceAll(":", "").split(" ")[1]);
     }
 
-    private List<Integer> getItemsFromInputString(String string) {
-        List<Integer> items = new ArrayList<>();
+    private List<Long> getItemsFromInputString(String string) {
+        List<Long> items = new ArrayList<>();
         String[] splitString = string.replaceAll(".*: |,", "").split(" ");
         for (String val : splitString) {
-            items.add(Integer.parseInt(val));
+            items.add(Long.parseLong(val));
         }
         return items;
     }
@@ -47,12 +48,14 @@ public class Day11 implements Day {
 
     private void buildMonkeyMap(List<String> input) {
         monkeyMap = new TreeMap<>();
+        monkeyLeastCommonMultiple = 1;
         int i = 0;
         while (i < input.size()) {
             int id = getIdFromInputString(input.get(i));
-            List<Integer> items = getItemsFromInputString(input.get(i + 1));
+            List<Long> items = getItemsFromInputString(input.get(i + 1));
             Operation operation = getOperationFromInputString(input.get(i + 2));
             int divisor = getLastValFromStringAsInt(input.get(i + 3));
+            monkeyLeastCommonMultiple *= divisor;
             int trueMonkeyId = getLastValFromStringAsInt(input.get(i + 4));
             int falseMonkeyId = getLastValFromStringAsInt(input.get(i + 5));
             monkeyMap.put(id, new Monkey(id, divisor, trueMonkeyId, falseMonkeyId, operation, items, monkeyMap));
@@ -60,19 +63,24 @@ public class Day11 implements Day {
         }
     }
 
-    private void executeRounds(int nRounds) {
+    private long executeRounds(int nRounds, int reliefLevel) {
+        // set up
+        buildMonkeyMap(input);
+
+        // simulate rounds
         for (int i = 0; i < nRounds; i++) {
             for (int id : monkeyMap.keySet()) {
                 Monkey monkey = monkeyMap.get(id);
-                monkey.turn();
+                monkey.turn(reliefLevel, monkeyLeastCommonMultiple);
             }
         }
+        return calculateMonkeyBusiness();
     }
 
-    private int calculateMonkeyBusiness() {
+    private long calculateMonkeyBusiness() {
         // identify the two most active monkeys
-        int largest = 0;
-        int secondLargest = 0;
+        long largest = 0;
+        long secondLargest = 0;
         for (Monkey monkey : monkeyMap.values()) {
             int val = monkey.getTotalItemsInspected();
             if (val > largest) {
@@ -82,18 +90,18 @@ public class Day11 implements Day {
                 secondLargest = val;
             }
         }
+
         // then multiply their results
         return largest * secondLargest;
     }
 
     @Override
     public Object part1(){
-        executeRounds(20);
-        return calculateMonkeyBusiness();
+        return executeRounds(20, 3);
     }
 
     @Override
     public Object part2() {
-        return -1;
+        return executeRounds(10_000, 1);
     }
 }

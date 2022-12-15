@@ -9,7 +9,7 @@ public class OperationAddition implements Operation {
     }
 
     @Override
-    public int updateWorryLevel(int worryLevel) {
-        return worryLevel + addend;
+    public long updateWorryLevel(long worryLevel) {
+        return Math.addExact(worryLevel, addend);
     }
 }
