@@ -1,4 +1,4 @@
-package com.hallietheswan;
+package com.hallietheswan.day07;
 
 import java.util.Collection;
 import java.util.HashMap;

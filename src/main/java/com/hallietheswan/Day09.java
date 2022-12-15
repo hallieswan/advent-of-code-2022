@@ -1,5 +1,7 @@
 package com.hallietheswan;
 
+import com.hallietheswan.day09.Knot;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;

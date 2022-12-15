@@ -1,5 +1,7 @@
 package com.hallietheswan;
 
+import com.hallietheswan.day07.DirectoryNode;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayDeque;

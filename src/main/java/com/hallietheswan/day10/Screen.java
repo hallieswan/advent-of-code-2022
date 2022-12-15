@@ -1,4 +1,4 @@
-package com.hallietheswan;
+package com.hallietheswan.day10;
 
 public class Screen {
     private char[][] screen;
